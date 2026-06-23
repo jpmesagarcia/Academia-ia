@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juanpi · Academia IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --surface2: #f2f0ec;
+    --border: #e8e4dc;
+    --text: #1a1916;
+    --text-muted: #7a756b;
+    --accent: #5046e5;
+    --accent-light: #eeedfb;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --blue: #0284c7;
+    --blue-light: #e0f2fe;
+    --gray-light: #f1efea;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text { font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
+  .logo-sub  { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+  .header-meta { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--text-muted); }
+  .streak-badge {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--amber-light); color: var(--amber);
+    padding: 5px 12px; border-radius: 20px;
+    font-weight: 600; font-size: 13px;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* ── PROGRESS HERO ── */
+  .progress-hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+    grid-column: 1 / -1;
+  }
+  .progress-title {
+    font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    color: var(--text-muted); margin-bottom: 20px;
+  }
+  .progress-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 20px; margin-bottom: 24px;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-size: 32px; font-weight: 700;
+    letter-spacing: -1px; line-height: 1; margin-bottom: 4px;
+  }
+  .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .stat-num.accent { color: var(--accent); }
+  .stat-num.green  { color: var(--green); }
+  .stat-num.amber  { color: var(--amber); }
+
+  .overall-bar-wrap { background: var(--surface2); border-radius: 8px; height: 10px; overflow: hidden; }
+  .overall-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #7c6ef0);
+    border-radius: 8px;
+    transition: width 0.6s ease;
+  }
+  .progress-labels {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text-muted); margin-top: 6px;
+  }
+
+  /* ── MAIN COLUMN ── */
+  .main-col { display: flex; flex-direction: column; gap: 20px; }
+
+  /* ── BLOQUE ── */
+  .block-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .block-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .block-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .block-icon.purple { background: var(--accent-light); }
+  .block-icon.blue   { background: var(--blue-light); }
+  .block-icon.amber  { background: var(--amber-light); }
+  .block-info { flex: 1; }
+  .block-name { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+  .block-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .block-progress { text-align: right; font-size: 12px; color: var(--text-muted); }
+  .block-pct { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1; }
+
+  /* ── LECCIÓN ROW ── */
+  .lesson-list { padding: 4px 0; }
+
+  .lesson-row {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .lesson-row:last-child { border-bottom: none; }
+
+  /* Cabecera clicable de la lección */
+  .lesson-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .lesson-header:hover { background: var(--gray-light); }
+
+  .lesson-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text-muted);
+    width: 28px; flex-shrink: 0;
+  }
+  .lesson-status {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; flex-shrink: 0; font-weight: 700;
+  }
+  .status-done   { background: var(--green-light);  color: var(--green); }
+  .status-active { background: var(--accent-light); color: var(--accent); border: 2px solid var(--accent); animation: pulse 2s infinite; }
+  .status-locked { background: var(--surface2);     color: var(--text-muted); border: 1.5px solid var(--border); }
+  .status-failed { background: var(--red-light);    color: var(--red); }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(80,70,229,0.3); }
+    50%       { box-shadow: 0 0 0 5px rgba(80,70,229,0); }
+  }
+
+  .lesson-info  { flex: 1; min-width: 0; }
+  .lesson-name  { font-size: 13px; font-weight: 600; }
+  .lesson-name.muted { color: var(--text-muted); font-weight: 400; }
+  .lesson-sub   { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+  .lesson-tags  { display: flex; gap: 6px; flex-shrink: 0; }
+
+  .tag {
+    font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .tag-quiz     { background: var(--accent-light); color: var(--accent); }
+  .tag-practica { background: var(--blue-light);   color: var(--blue); }
+  .tag-teoria   { background: var(--gray-light);   color: var(--text-muted); }
+  .tag-key      { background: var(--amber-light);  color: var(--amber); }
+
+  .score-pill {
+    font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 12px;
+    background: var(--green-light); color: var(--green);
+  }
+  .score-pill.fail { background: var(--red-light); color: var(--red); }
+
+  /* Chevron toggle */
+  .chevron {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: 6px;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    display: inline-block;
+  }
+  .lesson-row.open .chevron { transform: rotate(180deg); }
+
+  /* Panel de conceptos colapsable */
+  .lesson-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.2s ease;
+    padding: 0 24px;
+  }
+  .lesson-row.open .lesson-body {
+    max-height: 600px;
+    padding: 0 24px 16px;
+  }
+
+  /* Conceptos clave */
+  .lesson-concepts {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-left: 42px;
+  }
+  .concepts-title {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .cmd-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .cmd-table th {
+    text-align: left; font-weight: 600;
+    color: var(--text-muted); padding: 5px 10px;
+    background: var(--border); font-size: 11px;
+  }
+  .cmd-table th:first-child { border-radius: 6px 0 0 6px; }
+  .cmd-table th:last-child  { border-radius: 0 6px 6px 0; }
+  .cmd-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .cmd-table tr:last-child td { border-bottom: none; }
+  .cmd-table td:first-child { color: var(--text); font-weight: 500; }
+  .cmd-table code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2px 6px; border-radius: 4px;
+    color: var(--accent);
+  }
+
+  /* ── MINI-BAR ── */
+  .mini-bar-wrap { background: var(--surface2); border-radius: 4px; height: 4px; overflow: hidden; margin-top: 8px; }
+  .mini-bar { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .bar-purple { background: var(--accent); }
+  .bar-blue   { background: var(--blue); }
+  .bar-amber  { background: var(--amber); }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display: flex; flex-direction: column; gap: 20px; }
+  .widget { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+  .widget-title {
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--text-muted); margin-bottom: 16px;
+  }
+  .active-lesson-card {
+    background: var(--accent-light);
+    border: 1.5px solid var(--accent);
+    border-radius: 12px; padding: 16px;
+  }
+  .active-tag {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .active-name  { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .active-desc  { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 16px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; border: none;
+    transition: all 0.15s; font-family: 'Inter', sans-serif;
+  }
+  .btn-primary { background: var(--accent); color: white; width: 100%; justify-content: center; }
+  .btn-primary:hover { background: #3d33cc; }
+
+  /* Glosario */
+  .glossary-item { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .glossary-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .glossary-term { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; color: var(--accent); margin-bottom: 3px; }
+  .glossary-def  { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* Timeline */
+  .timeline-item { display: flex; gap: 12px; margin-bottom: 14px; }
+  .timeline-dot  { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .dot-green { background: var(--green); }
+  .dot-gray  { background: var(--border); }
+  .timeline-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+  .timeline-text strong { color: var(--text); }
+
+  footer {
+    text-align: center; padding: 24px;
+    font-size: 12px; color: var(--text-muted);
+    border-top: 1px solid var(--border); margin-top: 16px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🤖</div>
+    <div>
+      <div class="logo-text">Academia IA · Juanpi</div>
+      <div class="logo-sub">Claude Code · Agentes · Power Automate</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="streak-badge">🔥 5 días racha</div>
+    <span>Inicio: Jun 2026</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- HERO PROGRESS -->
+  <div class="progress-hero">
+    <div class="progress-title">Progreso general del programa</div>
+    <div class="progress-stats">
+      <div class="stat">
+        <div class="stat-num accent">5</div>
+        <div class="stat-label">Lecciones completadas</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">18</div>
+        <div class="stat-label">Lecciones totales</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num green">10/10</div>
+        <div class="stat-label">Nota media quizzes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num amber">0h</div>
+        <div class="stat-label">Tiempo invertido</div>
+      </div>
+    </div>
+    <div class="overall-bar-wrap">
+      <div class="overall-bar" style="width:31%"></div>
+    </div>
+    <div class="progress-labels">
+      <span>Inicio 🚀</span>
+      <span>Nivel intermedio</span>
+      <span>🏆 Certificado</span>
+    </div>
+  </div>
+
+  <!-- MAIN COLUMN -->
+  <div class="main-col">
+
+    <!-- BLOQUE 1: Claude Code -->
+    <div class="block-card">
+      <div class="block-header">
+        <div class="block-icon purple">⚡</div>
+        <div class="block-info">
+          <div class="block-name">Bloque 1 · Claude Code</div>
+          <div class="block-desc">De cero a usar Claude Code con soltura desde la terminal</div>
+        </div>
+        <div class="block-progress">
+          <div class="block-pct">71%</div>
+          <div>5 / 7 lecciones</div>
+          <div class="mini-bar-wrap"><div class="mini-bar bar-purple" style="width:71%"></div></div>
+        </div>
+      </div>
+      <div class="lesson-list">
+
+        <!-- L0: COMPLETADA con conceptos -->
+        <div class="lesson-row open" id="row-l0">
+          <div class="lesson-header" onclick="toggleLesson('row-l0')">
+            <div class="lesson-num">L0</div>
+            <div class="lesson-status status-done">✓</div>
+            <div class="lesson-info">
+              <div class="lesson-name">La terminal sin miedo</div>
+              <div class="lesson-sub">Qué es, por qué la necesitas, comandos esenciales</div>
+            </div>
+            <div class="lesson-tags">
+              <span class="tag tag-teoria">teoría</span>
+              <span class="tag tag-practica">práctica</span>
+              <span class="tag tag-key">🔑 clave</span>
+              <span class="score-pill">5/5 ⭐</span>
+            </div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="lesson-body">
+            <div class="lesson-concepts">
+              <div class="concepts-title">📋 Conceptos clave</div>
+              <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">La terminal es una interfaz de texto para hablar con el ordenador. Claude Code vive aquí — no tiene botones ni menús, solo comandos.</p>
+              <table class="cmd-table">
+                <thead>
+                  <tr><th>Qué quieres hacer</th><th>Windows (tu caso)</th><th>Mac / Linux</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>¿Dónde estoy?</td><td><code>cd</code></td><td><code>pwd</code></td></tr>
+                  <tr><td>¿Qué hay aquí?</td><td><code>dir</code></td><td><code>ls</code></td></tr>
+                  <tr><td>Entrar a una carpeta</td><td><code>cd NombreCarpeta</code></td><td><code>cd NombreCarpeta</code></td></tr>
+                  <tr><td>Volver atrás</td><td><code>cd ..</code></td><td><code>cd ..</code></td></tr>
+                  <tr><td>Limpiar pantalla</td><td><code>cls</code></td><td><code>clear</code></td></tr>
+                  <tr><td>Crear carpeta</td><td><code>mkdir nombre</code></td><td><code>mkdir nombre</code></td></tr>
+                </tbody>
+              </table>
+              <div style="margin-top:10px; font-size:11px; color:var(--text-muted);">💡 <strong>Lo más importante:</strong> Claude Code no es un chatbot web — vive en la terminal y actúa directamente sobre tus archivos.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- L1: COMPLETADA con conceptos -->
+        <div class="lesson-row" id="row-l1">
+          <div class="lesson-header" onclick="toggleLesson('row-l1')">
+            <div class="lesson-num">L1</div>
+            <div class="lesson-status status-done">✓</div>
+            <div class="lesson-info">
+              <div class="lesson-name">¿Qué es Claude Code?</div>
+              <div class="lesson-sub">Diferencias con claude.ai · para qué sirve realmente · casos de uso</div>
+            </div>
+            <div class="lesson-tags">
+              <span class="tag tag-teoria">teoría</span>
+              <span class="tag tag-quiz">quiz</span>
+              <span class="score-pill">5/5 ⭐</span>
+            </div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="lesson-body">
+            <div class="lesson-concepts">
+              <div class="concepts-title">📋 Conceptos clave</div>
+              <table class="cmd-table" style="margin-bottom:12px;">
+                <thead>
+                  <tr><th></th><th>claude.ai</th><th>Claude Code</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Dónde vive</td><td>Navegador</td><td>Terminal</td></tr>
+                  <tr><td>Qué puede tocar</td><td>Solo el chat</td><td>Tus archivos reales</td></tr>
+                  <tr><td>Qué hace</td><td>Responde y sugiere</td><td>Actúa directamente</td></tr>
+                  <tr><td>Analogía</td><td>Asesor que aconseja</td><td>Ejecutor que hace</td></tr>
+                </tbody>
+              </table>
+              <div style="font-size:12px; color:var(--text-muted); margin-bottom:8px;"><strong style="color:var(--text)">Casos de uso en consultoría:</strong> juntar Excels de clientes · organizar carpetas · analizar contratos · procesar datos de emails</div>
+              <div style="font-size:12px; color:var(--text-muted); margin-bottom:8px;"><strong style="color:var(--text)">Lo que NO hace por defecto:</strong> conectarse a internet · acceder a sistemas externos (eso es MCP, Bloque 2)</div>
+              <div style="font-size:11px; color:var(--text-muted);">💡 Necesita cuenta de pago (Pro, Max, Teams, Enterprise o API) — no funciona con cuenta gratuita.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- L2: COMPLETADA con conceptos -->
+        <div class="lesson-row" id="row-l2">
+          <div class="lesson-header" onclick="toggleLesson('row-l2')">
+            <div class="lesson-num">L2</div>
+            <div class="lesson-status status-done">✓</div>
+            <div class="lesson-info">
+              <div class="lesson-name">Instalación y primer arranque</div>
+              <div class="lesson-sub">Node.js · npm · claude login · tu primer "hola mundo"</div>
+            </div>
+            <div class="lesson-tags">
+              <span class="tag tag-practica">práctica</span>
+              <span class="tag tag-key">🔑 clave</span>
+              <span class="score-pill">5/5 ⭐</span>
+            </div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="lesson-body">
+            <div class="lesson-concepts">
+              <div class="concepts-title">📋 Conceptos clave</div>
+              <table class="cmd-table" style="margin-bottom:12px;">
+                <thead><tr><th>Paso</th><th>Comando / Acción</th><th>Para qué</th></tr></thead>
+                <tbody>
+                  <tr><td>Verificar Node.js</td><td><code>node --version</code></td><td>Comprobar si ya está instalado</td></tr>
+                  <tr><td>Instalar Claude Code</td><td><code>npm install -g @anthropic-ai/claude-code</code></td><td>Instala globalmente en tu sistema</td></tr>
+                  <tr><td>Verificar instalación</td><td><code>claude --version</code></td><td>Confirmar que Claude Code está listo</td></tr>
+                  <tr><td>Arrancar Claude Code</td><td><code>claude</code></td><td>Abre la sesión interactiva</td></tr>
+                  <tr><td>Salir</td><td><code>exit</code></td><td>Cierra la sesión</td></tr>
+                </tbody>
+              </table>
+              <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;"><strong style="color:var(--text)">Node.js:</strong> descargar siempre la versión <strong>LTS</strong> desde nodejs.org. Más estable, menos sorpresas.</div>
+              <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;"><strong style="color:var(--text)">Login:</strong> la primera vez que escribes <code>claude</code>, el navegador se abre solo para autenticarte con tu cuenta de pago.</div>
+              <div style="font-size:11px; color:var(--text-muted);">💡 <strong>Próximo paso:</strong> integrar Claude Code en VS Code para trabajar con interfaz visual. Mucho más cómodo para el día a día.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- L3: COMPLETADA con conceptos -->
+        <div class="lesson-row" id="row-l3">
+          <div class="lesson-header" onclick="toggleLesson('row-l3')">
+            <div class="lesson-num">L3</div>
+            <div class="lesson-status status-done">✓</div>
+            <div class="lesson-info">
+              <div class="lesson-name">Comandos esenciales</div>
+              <div class="lesson-sub">Cómo pedir cosas · Plan Mode · revisar antes de ejecutar</div>
+            </div>
+            <div class="lesson-tags">
+              <span class="tag tag-practica">práctica</span>
+              <span class="tag tag-quiz">quiz</span>
+              <span class="score-pill">5/5 ⭐</span>
+            </div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="lesson-body">
+            <div class="lesson-concepts">
+              <div class="concepts-title">📋 Conceptos clave</div>
+              <table class="cmd-table" style="margin-bottom:12px;">
+                <thead><tr><th>Modo</th><th>Comando</th><th>Cuándo usarlo</th></tr></thead>
+                <tbody>
+                  <tr><td>Interactivo</td><td><code>claude</code></td><td>Sesión larga, varias tareas seguidas</td></tr>
+                  <tr><td>Pregunta rápida</td><td><code>claude "pregunta"</code></td><td>Consulta puntual sin entrar en sesión</td></tr>
+                  <tr><td>Plan Mode ⭐</td><td><code>claude --plan "tarea"</code></td><td>Ver qué va a hacer ANTES de ejecutar</td></tr>
+                  <tr><td>Interrumpir</td><td><code>Ctrl + C</code></td><td>Parar cualquier ejecución en curso</td></tr>
+                  <tr><td>Salir</td><td><code>exit</code></td><td>Cerrar el modo interactivo</td></tr>
+                  <tr><td>Retomar sesión</td><td><code>claude --resume [id]</code></td><td>Continuar exactamente donde lo dejaste</td></tr>
+                </tbody>
+              </table>
+              <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;"><strong style="color:var(--text)">VS Code:</strong> terminal integrada con <code>Ctrl + `</code> · Cambiar idioma: <code>Ctrl+Shift+P</code> → Configure Display Language</div>
+              <div style="font-size:11px; color:var(--text-muted);">💡 <strong>Regla de oro:</strong> en tareas que afecten ficheros importantes, usa siempre <code>--plan</code> primero y revisa antes de dar el OK.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- L4: COMPLETADA con conceptos -->
+        <div class="lesson-row" id="row-l4">
+          <div class="lesson-header" onclick="toggleLesson('row-l4')">
+            <div class="lesson-num">L4</div>
+            <div class="lesson-status status-done">✓</div>
+            <div class="lesson-info">
+              <div class="lesson-name">CLAUDE.md: darle contexto a Claude</div>
+              <div class="lesson-sub">El fichero de instrucciones · cómo personalizarlo · ejemplos</div>
+            </div>
+            <div class="lesson-tags">
+              <span class="tag tag-teoria">teoría</span>
+              <span class="tag tag-practica">práctica</span>
+              <span class="score-pill">5/5 ⭐</span>
+            </div>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="lesson-body">
+            <div class="lesson-concepts">
+              <div class="concepts-title">📋 Conceptos clave</div>
+              <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">CLAUDE.md es un fichero de texto en la raíz del proyecto que Claude Code lee automáticamente al arrancar. Es el briefing permanente del proyecto.</p>
+              <table class="cmd-table" style="margin-bottom:12px;">
+                <thead><tr><th>Sección</th><th>Para qué sirve</th></tr></thead>
+                <tbody>
+                  <tr><td>Contexto</td><td>Qué es el proyecto, quién lo usa, para qué</td></tr>
+                  <tr><td>NUNCA tocar</td><td>Ficheros críticos, backups, datos sensibles</td></tr>
+                  <tr><td>Convenciones</td><td>Nombres de fichero, idioma, estructura</td></tr>
+                  <tr><td>Tareas frecuentes</td><td>Atajos para cosas que pides a menudo</td></tr>
+                </tbody>
+              </table>
+              <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;"><strong style="color:var(--text)">Dónde va:</strong> en la carpeta raíz del proyecto, junto al resto de ficheros.</div>
+              <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;"><strong style="color:var(--text)">Formato:</strong> texto plano en Markdown. Sin sintaxis especial obligatoria.</div>
+              <div style="font-size:11px; color:var(--text-muted);">💡 Puedes escribirlo tú o pedirle al propio Claude Code que lo genere describiendo tu proyecto.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- L5 -->
+        <div class="lesson-row" id="row-l5">
+          <div class="lesson-header" onclick="toggleLesson('row-l5')">
+            <div class="lesson-num">L5</div>
+            <div class="lesson-status status-active">▶</div>
+            <div class="lesson-info">
+              <div class="lesson-name">Proyecto real: automatizar un informe</div>
+              <div class="lesson-sub">Ejercicio guiado completo aplicado a consultoría</div>
+            </div>
+            <div class="lesson-tags">
+              <span class="tag tag-practica">práctica</span>
+              <span class="tag tag-key">🔑 clave</span>
+            </div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+
+        <!-- L6 -->
+        <div class="lesson-row" id="row-l6">
+          <div class="lesson-header" onclick="toggleLesson('row-l6')">
+            <div class="lesson-num">L6</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">Evaluación final Bloque 1</div>
+              <div class="lesson-sub">Quiz completo + mini reto práctico · necesitas 80% para pasar</div>
+            </div>
+            <div class="lesson-tags">
+              <span class="tag tag-quiz">quiz</span>
+              <span class="tag tag-key">🏆 final</span>
+            </div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BLOQUE 2: Agentes IA -->
+    <div class="block-card">
+      <div class="block-header">
+        <div class="block-icon blue">🧠</div>
+        <div class="block-info">
+          <div class="block-name">Bloque 2 · Agentes IA &amp; Orquestadores</div>
+          <div class="block-desc">Qué son los agentes, MCP, herramientas y flujos autónomos</div>
+        </div>
+        <div class="block-progress">
+          <div class="block-pct">–</div>
+          <div>0 / 6 lecciones</div>
+          <div class="mini-bar-wrap"><div class="mini-bar bar-blue" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="lesson-list">
+        <div class="lesson-row" id="row-l7">
+          <div class="lesson-header" onclick="toggleLesson('row-l7')">
+            <div class="lesson-num">L7</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">¿Qué es un agente de IA?</div>
+              <div class="lesson-sub">Concepto · diferencia con chatbot · cuándo usarlos</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-teoria">teoría</span><span class="tag tag-quiz">quiz</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+        <div class="lesson-row" id="row-l8">
+          <div class="lesson-header" onclick="toggleLesson('row-l8')">
+            <div class="lesson-num">L8</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">MCP: Model Context Protocol</div>
+              <div class="lesson-sub">El "enchufe" que conecta Claude con herramientas externas</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-teoria">teoría</span><span class="tag tag-key">🔑 clave</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+        <div class="lesson-row" id="row-l9">
+          <div class="lesson-header" onclick="toggleLesson('row-l9')">
+            <div class="lesson-num">L9</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">Conectando Claude con herramientas</div>
+              <div class="lesson-sub">Google Drive, email, calendario, búsqueda web · demo práctica</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-practica">práctica</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+        <div class="lesson-row" id="row-l10">
+          <div class="lesson-header" onclick="toggleLesson('row-l10')">
+            <div class="lesson-num">L10</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">Orquestadores: n8n y similares</div>
+              <div class="lesson-sub">Qué son · cómo coordinan múltiples agentes · ejemplos reales</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-teoria">teoría</span><span class="tag tag-practica">práctica</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+        <div class="lesson-row" id="row-l11">
+          <div class="lesson-header" onclick="toggleLesson('row-l11')">
+            <div class="lesson-num">L11</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">Construyendo tu primer agente</div>
+              <div class="lesson-sub">Agente que lee emails y redacta respuestas · ejercicio guiado</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-practica">práctica</span><span class="tag tag-key">🔑 clave</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+        <div class="lesson-row" id="row-l12">
+          <div class="lesson-header" onclick="toggleLesson('row-l12')">
+            <div class="lesson-num">L12</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">Evaluación final Bloque 2</div>
+              <div class="lesson-sub">Quiz + diseño de un flujo agéntico propio</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-quiz">quiz</span><span class="tag tag-key">🏆 final</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOQUE 3: Power Automate -->
+    <div class="block-card">
+      <div class="block-header">
+        <div class="block-icon amber">⚙️</div>
+        <div class="block-info">
+          <div class="block-name">Bloque 3 · Power Automate &amp; Automatización</div>
+          <div class="block-desc">Flujos sin código con Microsoft Power Platform + IA</div>
+        </div>
+        <div class="block-progress">
+          <div class="block-pct">–</div>
+          <div>0 / 5 lecciones</div>
+          <div class="mini-bar-wrap"><div class="mini-bar bar-amber" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="lesson-list">
+        <div class="lesson-row" id="row-l13">
+          <div class="lesson-header" onclick="toggleLesson('row-l13')">
+            <div class="lesson-num">L13</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">¿Qué es Power Automate?</div>
+              <div class="lesson-sub">Triggers · acciones · conectores · el ecosistema Microsoft</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-teoria">teoría</span><span class="tag tag-quiz">quiz</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+        <div class="lesson-row" id="row-l14">
+          <div class="lesson-header" onclick="toggleLesson('row-l14')">
+            <div class="lesson-num">L14</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">Tu primer flujo: notificación automática</div>
+              <div class="lesson-sub">Cuando llega un email → guarda en Excel → manda Teams</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-practica">práctica</span><span class="tag tag-key">🔑 clave</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+        <div class="lesson-row" id="row-l15">
+          <div class="lesson-header" onclick="toggleLesson('row-l15')">
+            <div class="lesson-num">L15</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">Integrando IA en tus flujos</div>
+              <div class="lesson-sub">AI Builder · resumir documentos · clasificar emails con Claude</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-teoria">teoría</span><span class="tag tag-practica">práctica</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+        <div class="lesson-row" id="row-l16">
+          <div class="lesson-header" onclick="toggleLesson('row-l16')">
+            <div class="lesson-num">L16</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">Flujos avanzados para consultoría</div>
+              <div class="lesson-sub">Gestión de proyectos · reportes automáticos · alertas de hitos</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-practica">práctica</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+        <div class="lesson-row" id="row-l17">
+          <div class="lesson-header" onclick="toggleLesson('row-l17')">
+            <div class="lesson-num">L17</div>
+            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-info">
+              <div class="lesson-name muted">Evaluación final + Proyecto integrador</div>
+              <div class="lesson-sub">Diseña y despliega un flujo real para tu trabajo en Accenture</div>
+            </div>
+            <div class="lesson-tags"><span class="tag tag-quiz">quiz</span><span class="tag tag-key">🏆 final</span></div>
+            <span class="chevron" style="visibility:hidden">▼</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-col -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="widget">
+      <div class="widget-title">Próximo paso</div>
+      <div class="active-lesson-card">
+        <div class="active-tag">▶ Activa ahora</div>
+        <div class="active-name">L5 · Proyecto real</div>
+        <div class="active-desc">Ejercicio guiado completo: usarás todo lo aprendido para automatizar una tarea real de consultoría con Claude Code.</div>
+        <button class="btn btn-primary" onclick="alert('¡Pídele a Clau que empiece la Lección 1! 🚀')">
+          Empezar lección →
+        </button>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-title">Historial de quizzes</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+        <div>
+          <div style="font-size:13px; font-weight:600;">L0 · La terminal</div>
+          <div style="font-size:11px; color:var(--text-muted);">Jun 2026</div>
+        </div>
+        <span class="score-pill">5/5 ⭐</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+        <div>
+          <div style="font-size:13px; font-weight:600;">L1 · ¿Qué es Claude Code?</div>
+          <div style="font-size:11px; color:var(--text-muted);">Jun 2026</div>
+        </div>
+        <span class="score-pill">5/5 ⭐</span>
+      </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+        <div>
+          <div style="font-size:13px; font-weight:600;">L2 · Instalación</div>
+          <div style="font-size:11px; color:var(--text-muted);">Jun 2026</div>
+        </div>
+        <span class="score-pill">5/5 ⭐</span>
+      </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+        <div>
+          <div style="font-size:13px; font-weight:600;">L3 · Comandos esenciales</div>
+          <div style="font-size:11px; color:var(--text-muted);">Jun 2026</div>
+        </div>
+        <span class="score-pill">5/5 ⭐</span>
+      </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+        <div>
+          <div style="font-size:13px; font-weight:600;">L4 · CLAUDE.md</div>
+          <div style="font-size:11px; color:var(--text-muted);">Jun 2026</div>
+        </div>
+        <span class="score-pill">5/5 ⭐</span>
+      </div>
+      <div style="text-align:center; padding: 14px 0 4px; color: var(--text-muted); font-size:12px;">Media actual: <strong style="color:var(--green)">10/10</strong></div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-title">Glosario esencial</div>
+      <div class="glossary-item">
+        <div class="glossary-term">Terminal / CLI</div>
+        <div class="glossary-def">Interfaz de texto para hablar con el ordenador. La base de Claude Code.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Claude Code</div>
+        <div class="glossary-def">Herramienta de Anthropic que vive en tu terminal. Lee tu código y actúa directamente sobre tus archivos.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">npm / Node.js</div>
+        <div class="glossary-def">El "motor" necesario para instalar Claude Code. Node.js es el entorno; npm es su gestor de paquetes.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Agente IA</div>
+        <div class="glossary-def">IA que no solo responde preguntas, sino que ejecuta acciones de forma autónoma en cadena.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">MCP</div>
+        <div class="glossary-def">Model Context Protocol. El protocolo que permite a Claude conectarse con herramientas externas (email, Drive, APIs…).</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Orquestador</div>
+        <div class="glossary-def">Sistema que coordina múltiples agentes o pasos automáticos. Ejemplos: n8n, Power Automate.</div>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-title">Bitácora</div>
+      <div class="timeline-item">
+        <div class="timeline-dot dot-green"></div>
+        <div class="timeline-text"><strong>Jun 2026</strong> — Programa iniciado. ¡Bienvenido, Juanpi! 🎉</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot dot-green"></div>
+        <div class="timeline-text"><strong>Jun 2026</strong> — L0 completada · Quiz 5/5 ⭐ · Terminal dominada en Windows</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot dot-green"></div>
+        <div class="timeline-text"><strong>Jun 2026</strong> — L1 completada · Quiz 5/5 ⭐ · Claude Code vs claude.ai crystal clear</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot dot-gray"></div>
+        <div class="timeline-text" style="color: var(--border)">— próximas sesiones —</div>
+      </div>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /container -->
+
+<footer>
+  Academia IA · Juanpi &amp; Clau · Programa iniciado junio 2026 &nbsp;·&nbsp;
+  Actualizado tras cada sesión
+</footer>
+
+<script>
+  function toggleLesson(id) {
+    const row = document.getElementById(id);
+    const body = row.querySelector('.lesson-body');
+    // Solo togglable si tiene contenido
+    if (!body) return;
+    row.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
