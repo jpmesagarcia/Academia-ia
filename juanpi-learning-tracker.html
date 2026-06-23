@@ -343,7 +343,7 @@
     </div>
   </div>
   <div class="header-meta">
-    <div class="streak-badge">🔥 5 días racha</div>
+    <div class="streak-badge">🔥 7 días racha</div>
     <span>Inicio: Jun 2026</span>
   </div>
 </header>
@@ -355,7 +355,7 @@
     <div class="progress-title">Progreso general del programa</div>
     <div class="progress-stats">
       <div class="stat">
-        <div class="stat-num accent">5</div>
+        <div class="stat-num accent">7</div>
         <div class="stat-label">Lecciones completadas</div>
       </div>
       <div class="stat">
@@ -363,7 +363,7 @@
         <div class="stat-label">Lecciones totales</div>
       </div>
       <div class="stat">
-        <div class="stat-num green">10/10</div>
+        <div class="stat-num green">9.7/10</div>
         <div class="stat-label">Nota media quizzes</div>
       </div>
       <div class="stat">
@@ -372,7 +372,7 @@
       </div>
     </div>
     <div class="overall-bar-wrap">
-      <div class="overall-bar" style="width:31%"></div>
+      <div class="overall-bar" style="width:42%"></div>
     </div>
     <div class="progress-labels">
       <span>Inicio 🚀</span>
@@ -393,9 +393,9 @@
           <div class="block-desc">De cero a usar Claude Code con soltura desde la terminal</div>
         </div>
         <div class="block-progress">
-          <div class="block-pct">71%</div>
-          <div>5 / 7 lecciones</div>
-          <div class="mini-bar-wrap"><div class="mini-bar bar-purple" style="width:71%"></div></div>
+          <div class="block-pct">100%</div>
+          <div>7 / 7 lecciones ✓</div>
+          <div class="mini-bar-wrap"><div class="mini-bar bar-purple" style="width:100%"></div></div>
         </div>
       </div>
       <div class="lesson-list">
@@ -584,11 +584,11 @@
           </div>
         </div>
 
-        <!-- L5 -->
+        <!-- L5: COMPLETADA con conceptos -->
         <div class="lesson-row" id="row-l5">
           <div class="lesson-header" onclick="toggleLesson('row-l5')">
             <div class="lesson-num">L5</div>
-            <div class="lesson-status status-active">▶</div>
+            <div class="lesson-status status-done">✓</div>
             <div class="lesson-info">
               <div class="lesson-name">Proyecto real: automatizar un informe</div>
               <div class="lesson-sub">Ejercicio guiado completo aplicado a consultoría</div>
@@ -596,23 +596,42 @@
             <div class="lesson-tags">
               <span class="tag tag-practica">práctica</span>
               <span class="tag tag-key">🔑 clave</span>
+              <span class="score-pill">5/5 ⭐</span>
             </div>
-            <span class="chevron" style="visibility:hidden">▼</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="lesson-body">
+            <div class="lesson-concepts">
+              <div class="concepts-title">📋 Conceptos clave</div>
+              <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Claude Code puede leer múltiples ficheros, procesar datos y generar informes ejecutivos completos con una sola instrucción en lenguaje natural.</p>
+              <table class="cmd-table" style="margin-bottom:12px;">
+                <thead><tr><th>Flujo de trabajo</th><th>Cómo hacerlo</th></tr></thead>
+                <tbody>
+                  <tr><td>Pedir el plan primero</td><td>Dentro de la sesión: "explícame qué vas a hacer, no ejecutes nada"</td></tr>
+                  <tr><td>Dar el OK</td><td>"Perfecto, adelante" tras revisar el plan</td></tr>
+                  <tr><td>Pedir mejoras</td><td>Volver a entrar y pedir ajustes conversacionalmente</td></tr>
+                  <tr><td>Retomar sesión</td><td><code>claude --resume [id]</code></td></tr>
+                </tbody>
+              </table>
+              <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;"><strong style="color:var(--text)">--plan:</strong> flag obsoleto en versiones recientes. Alternativa: pedir el plan conversacionalmente dentro de la sesión interactiva.</div>
+              <div style="font-size:11px; color:var(--text-muted);">💡 CLAUDE.md actúa en segundo plano — Claude ya sabe en qué proyecto está sin que se lo expliques cada vez.</div>
+            </div>
           </div>
         </div>
 
-        <!-- L6 -->
+        <!-- L6: COMPLETADA -->
         <div class="lesson-row" id="row-l6">
           <div class="lesson-header" onclick="toggleLesson('row-l6')">
             <div class="lesson-num">L6</div>
-            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-status status-done">✓</div>
             <div class="lesson-info">
-              <div class="lesson-name muted">Evaluación final Bloque 1</div>
-              <div class="lesson-sub">Quiz completo + mini reto práctico · necesitas 80% para pasar</div>
+              <div class="lesson-name">Evaluación final Bloque 1</div>
+              <div class="lesson-sub">Quiz completo · Bloque 1 certificado con distinción</div>
             </div>
             <div class="lesson-tags">
               <span class="tag tag-quiz">quiz</span>
               <span class="tag tag-key">🏆 final</span>
+              <span class="score-pill">9/10 ⭐</span>
             </div>
             <span class="chevron" style="visibility:hidden">▼</span>
           </div>
@@ -630,7 +649,7 @@
           <div class="block-desc">Qué son los agentes, MCP, herramientas y flujos autónomos</div>
         </div>
         <div class="block-progress">
-          <div class="block-pct">–</div>
+          <div class="block-pct">▶ Siguiente</div>
           <div>0 / 6 lecciones</div>
           <div class="mini-bar-wrap"><div class="mini-bar bar-blue" style="width:0%"></div></div>
         </div>
@@ -639,9 +658,9 @@
         <div class="lesson-row" id="row-l7">
           <div class="lesson-header" onclick="toggleLesson('row-l7')">
             <div class="lesson-num">L7</div>
-            <div class="lesson-status status-locked">🔒</div>
+            <div class="lesson-status status-active">▶</div>
             <div class="lesson-info">
-              <div class="lesson-name muted">¿Qué es un agente de IA?</div>
+              <div class="lesson-name">¿Qué es un agente de IA?</div>
               <div class="lesson-sub">Concepto · diferencia con chatbot · cuándo usarlos</div>
             </div>
             <div class="lesson-tags"><span class="tag tag-teoria">teoría</span><span class="tag tag-quiz">quiz</span></div>
@@ -798,8 +817,8 @@
       <div class="widget-title">Próximo paso</div>
       <div class="active-lesson-card">
         <div class="active-tag">▶ Activa ahora</div>
-        <div class="active-name">L5 · Proyecto real</div>
-        <div class="active-desc">Ejercicio guiado completo: usarás todo lo aprendido para automatizar una tarea real de consultoría con Claude Code.</div>
+        <div class="active-name">L7 · ¿Qué es un agente de IA?</div>
+        <div class="active-desc">Comienzo del Bloque 2. Aprenderás qué es un agente de IA, en qué se diferencia de un chatbot y cuándo tiene sentido usarlo. 🧠</div>
         <button class="btn btn-primary" onclick="alert('¡Pídele a Clau que empiece la Lección 1! 🚀')">
           Empezar lección →
         </button>
@@ -843,7 +862,21 @@
         </div>
         <span class="score-pill">5/5 ⭐</span>
       </div>
-      <div style="text-align:center; padding: 14px 0 4px; color: var(--text-muted); font-size:12px;">Media actual: <strong style="color:var(--green)">10/10</strong></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+        <div>
+          <div style="font-size:13px; font-weight:600;">L5 · Proyecto real</div>
+          <div style="font-size:11px; color:var(--text-muted);">Jun 2026</div>
+        </div>
+        <span class="score-pill">5/5 ⭐</span>
+      </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 0; border-bottom: 1px solid var(--border);">
+        <div>
+          <div style="font-size:13px; font-weight:600;">L6 · Evaluación final B1</div>
+          <div style="font-size:11px; color:var(--text-muted);">Jun 2026</div>
+        </div>
+        <span class="score-pill">9/10 ⭐</span>
+      </div>
+      <div style="text-align:center; padding: 14px 0 4px; color: var(--text-muted); font-size:12px;">Media actual: <strong style="color:var(--green)">9.7/10</strong></div>
     </div>
 
     <div class="widget">
